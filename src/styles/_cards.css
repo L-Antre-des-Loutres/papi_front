@@ -1,0 +1,86 @@
+/* ============================================================
+   CARDS — .form-edit-card and layout variants
+   ============================================================ */
+
+.default-card-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-5);
+}
+
+@media (max-width: 1080px) { .default-card-grid-4 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px)  { .default-card-grid-4 { grid-template-columns: 1fr; } }
+
+.default-card-grid-5 {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-5);
+}
+
+@media (max-width: 1200px) { .default-card-grid-5 { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px)  { .default-card-grid-5 { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px)  { .default-card-grid-5 { grid-template-columns: 1fr; } }
+
+.form-edit-card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+}
+
+.form-edit-card-grid > * { min-width: 0; }
+.form-edit-stats-card     { grid-column: span 2; }
+
+.form-edit-card-main {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-5);
+    background: var(--color-white);
+    border: 1px solid var(--color-lightgray);
+    border-radius: var(--radius-md);
+    padding: var(--space-5) var(--space-6);
+    margin-bottom: var(--space-5);
+    box-shadow: 0 1px 3px var(--black-08);
+}
+
+.form-edit-card-main-border {
+    border-right: 1px solid var(--color-lightgray);
+    padding-right: var(--space-5);
+}
+
+.form-edit-card-main-image-container { display: flex; justify-content: center; }
+
+.form-edit-card-main-image {
+    padding: var(--space-4);
+    align-self: center;
+    width: 200px;
+    image-rendering: pixelated;
+}
+
+.form-edit-card {
+    background: var(--color-white);
+    border: 1px solid var(--color-lightgray);
+    border-radius: var(--radius-md);
+    padding: var(--space-4) var(--space-5);
+    box-shadow: 0 1px 3px var(--black-08);
+}
+
+.form-edit-card-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form-edit-card svg {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    transition: fill var(--transition-base);
+}
+
+.form-edit-card-title {
+    font-size: var(--text-base);
+    font-weight: var(--weight-bold);
+    margin: 0 0 var(--space-4) 0;
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-lightgray);
+}

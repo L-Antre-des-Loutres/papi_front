@@ -1,0 +1,50 @@
+/* ============================================================
+   MATCHUP MATRIX — Type effectiveness grid (Types page)
+   ============================================================ */
+
+.matchup-matrix {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--text-sm);
+    max-width: var(--main-frame-max-width);
+}
+
+.matchup-corner,
+.matchup-header-attacking,
+.matchup-header-defending {
+    width: var(--space-10);
+    height: var(--space-14);
+    background: var(--color-darkgray);
+    color: var(--color-white);
+    font-weight: var(--weight-black);
+    padding: var(--space-3);
+}
+
+.matchup-cell {
+    text-align: center;
+    font-weight: var(--weight-bold);
+    font-size: var(--text-base);
+    cursor: pointer;
+    user-select: none;
+    transition: background var(--transition-fast);
+    height: var(--space-14);
+    width: var(--space-10);
+}
+
+.matchup-cell[data-effectiveness="EFFECTIVE"]          { background: var(--color-bg); color: var(--color-text-primary); }
+.matchup-cell[data-effectiveness="SUPER_EFFECTIVE"]    { background: var(--color-positive); color: var(--color-white); }
+.matchup-cell[data-effectiveness="NOT_VERY_EFFECTIVE"] { background: var(--color-negative); color: var(--color-white); }
+.matchup-cell[data-effectiveness="NO_EFFECT"]          { background: var(--color-darkgray); color: var(--color-text-inverse); }
+
+.matchup-matrix tbody tr:nth-child(even) .matchup-cell[data-effectiveness="EFFECTIVE"] {
+    background: var(--rgb-dark-background);
+}
+
+.matchup-cell[data-effectiveness="EFFECTIVE"]:hover          { background: linear-gradient(var(--rgb-darkerer-background), var(--rgb-darkerer-background)), var(--color-bg); }
+.matchup-cell[data-effectiveness="SUPER_EFFECTIVE"]:hover    { background: linear-gradient(var(--rgb-darkerer-background), var(--rgb-darkerer-background)), var(--color-positive); }
+.matchup-cell[data-effectiveness="NOT_VERY_EFFECTIVE"]:hover { background: linear-gradient(var(--rgb-darkerer-background), var(--rgb-darkerer-background)), var(--color-negative); }
+.matchup-cell[data-effectiveness="NO_EFFECT"]:hover          { background: linear-gradient(var(--rgb-darkerer-background), var(--rgb-darkerer-background)), var(--color-darkgray); }
+
+.matchup-matrix tbody tr:nth-child(even) .matchup-cell[data-effectiveness="EFFECTIVE"]:hover {
+    background: linear-gradient(var(--rgb-darkerer-background), var(--rgb-darkerer-background)), var(--rgb-dark-background);
+}

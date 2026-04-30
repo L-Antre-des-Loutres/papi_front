@@ -1,0 +1,52 @@
+/* ============================================================
+   COLORS — Semantic color variables
+   Always use these in components, never raw palette values
+   ============================================================ */
+
+:root {
+
+    /* ── surfaces ── */
+    --color-bg:              var(--sand);
+    --color-bg-frosted:      var(--sand-85);
+    --color-sidebar:         var(--ink);
+    --color-sidebar-alt:     var(--ink-soft);
+
+    --color-badge-bg:        var(--white-15);
+
+    /* ── actions ── */
+    --color-save:            var(--green);
+    --color-save-validate:   var(--green-dark);
+    --color-update:          var(--blue);
+    --color-delete:          var(--red);
+    --color-logout:          var(--red);
+    --color-positive:        var(--green);
+    --color-negative:        var(--red);
+    --color-void:            var(--color-darkgray);
+
+    /* ── accent ── */
+    --color-accent:          var(--orange);
+    --color-accent-glow:     var(--orange-28);
+    --color-link:            var(--blue);
+    --color-white:           var(--white);
+    --color-lightgray:       var(--slate);
+    --color-darkgray:        var(--ink-soft);
+
+    /* ── overlays ── */
+    --rgb-overdark-background: var(--black-80);
+    --rgb-darkiest-background: var(--black-60);
+    --rgb-darkest-background:  var(--black-48);
+    --rgb-darkerer-background: var(--black-36);
+    --rgb-darker-background:   var(--black-12);
+    --rgb-dark-background:     var(--black-08);
+
+    /* ── text ── */
+    --color-text-primary:    var(--ink);
+    --color-text-secondary:  var(--slate-mid);
+    --color-text-muted:      var(--slate);
+    --color-text-inverse:    var(--white);
+    --color-text-sidebar:    var(--slate-light);
+
+    /* ── borders ── */
+    --color-border:          var(--slate-subtle);
+    --color-sidebar-border:  var(--white-06);
+}

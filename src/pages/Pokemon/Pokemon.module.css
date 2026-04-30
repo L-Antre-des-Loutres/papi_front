@@ -1,0 +1,5 @@
+.symbolInput { width: 150px; }
+.dexInput     { width: 80px; }
+.typeSelect   { width: 110px; }
+.sprite       { display: flex; justify-content: center; align-items: center; }
+.spriteImg    { width: 64px; height: 64px; image-rendering: pixelated; }

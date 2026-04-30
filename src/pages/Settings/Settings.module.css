@@ -1,0 +1,44 @@
+.section { margin-bottom: var(--space-8); }
+
+.fields {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--space-4);
+}
+
+.hint {
+    margin-left: var(--space-3);
+    font-weight: var(--weight-normal);
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+}
+
+.currentUrl {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+}
+
+.currentLabel {
+    color: var(--color-text-secondary);
+    white-space: nowrap;
+}
+
+.currentValue {
+    font-family: monospace;
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    background: var(--color-bg-alt);
+    padding: 2px var(--space-2);
+    border-radius: var(--radius-sm);
+    word-break: break-all;
+}
+
+.actions {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+}

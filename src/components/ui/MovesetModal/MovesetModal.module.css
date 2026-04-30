@@ -1,0 +1,66 @@
+.overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--rgb-darkest-background);
+    z-index: var(--z-modal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.content {
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    min-width: var(--modal-min-width);
+    max-width: var(--modal-max-width);
+    width: 100%;
+    box-shadow: var(--shadow-modal);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-4);
+}
+
+.addRow {
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border);
+    align-items: center;
+}
+
+.moveSelect  { flex: 2; }
+.methodSelect{ flex: 1; }
+.levelInput  { width: 70px; }
+
+.moveList {
+    max-height: 60vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding-top: var(--space-3);
+}
+
+.moveEntry {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    background: var(--rgb-dark-background);
+    border-radius: var(--radius-md);
+    font-size: var(--text-sm);
+}
+
+.moveEntryInfo { flex: 1; }
+
+.footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: var(--space-5);
+}

@@ -1,0 +1,24 @@
+/* ============================================================
+   TAGS — .global-tags pill component
+   ============================================================ */
+
+.global-tags {
+    display: inline-flex;
+    background: var(--rgb-darker-background);
+    align-items: center;
+    font-size: var(--text-sm);
+    gap: var(--space-2);
+    border-radius: var(--radius-full);
+    padding: var(--space-1) var(--space-3);
+    margin: var(--space-1);
+}
+
+.global-tags button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-delete);
+    font-size: var(--text-sm);
+    padding: var(--space-0);
+    line-height: 1;
+}

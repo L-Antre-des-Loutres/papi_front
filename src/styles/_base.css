@@ -1,0 +1,23 @@
+/* ============================================================
+   BASE — Headings, links, base element styles
+   ============================================================ */
+
+h1 {
+    font-weight: var(--weight-black);
+    color: var(--color-text-primary);
+    margin-top: var(--space-0);
+    margin-bottom: var(--space-0);
+}
+
+h2 {
+    font-weight: var(--weight-black);
+    color: var(--color-text-primary);
+    margin-top: var(--space-8);
+    margin-bottom: var(--space-4);
+}
+
+a, .hyperlink {
+    color: var(--color-link);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}

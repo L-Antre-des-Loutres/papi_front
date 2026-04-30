@@ -1,0 +1,41 @@
+/* ============================================================
+   TABLES — .global-content-table and scroll wrapper
+   ============================================================ */
+
+.table-scroll-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.global-content-table {
+    width: 100%;
+    border-collapse: collapse;
+    max-width: var(--main-frame-max-width);
+}
+
+.global-content-table thead {
+    background-color: var(--color-darkgray);
+    color: var(--color-text-inverse);
+}
+
+.global-content-table th {
+    text-align: center;
+    padding: var(--space-3) var(--space-4);
+    font-weight: var(--weight-black);
+    font-size: var(--text-base);
+}
+
+.global-content-table tbody tr {
+    text-align: center;
+    background-color: var(--color-bg);
+}
+
+.global-content-table tbody tr:nth-child(even) {
+    background-color: var(--rgb-dark-background);
+}
+
+.global-content-table td button svg,
+.global-content-table td a svg { width: var(--space-8); }
+
+.table-tr-base-height { height: var(--space-14); }

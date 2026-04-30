@@ -1,0 +1,13 @@
+services:
+  papi-frontend:
+    build: .
+    container_name: papi-frontend
+    ports:
+      - "8088:80"
+    networks:
+      - papi-network
+    restart: always
+
+networks:
+  papi-network:
+    external: true

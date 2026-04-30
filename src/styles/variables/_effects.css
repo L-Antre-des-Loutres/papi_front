@@ -1,0 +1,20 @@
+/* ============================================================
+   EFFECTS — Border radius, shadows, transitions
+   ============================================================ */
+
+:root {
+
+    /* ── border-radius ── */
+    --radius-sm:       4px;
+    --radius-md:       8px;
+    --radius-full:     9999px;
+
+    /* ── shadows ── */
+    --shadow-accent:   0 4px 20px var(--color-accent-glow);
+    --shadow-modal:    0 8px 32px var(--black-20);
+
+    /* ── transitions ── */
+    --transition-fast: 150ms ease;
+    --transition-base: 250ms ease;
+    --transition-slow: 350ms ease;
+}

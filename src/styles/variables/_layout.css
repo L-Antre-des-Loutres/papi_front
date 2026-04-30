@@ -1,0 +1,14 @@
+/* ============================================================
+   LAYOUT — Structural dimension variables
+   ============================================================ */
+
+:root {
+    --sidebar-width:        240px;
+    --sidebar-width-open:   240px;
+    --sidebar-collapsed:    64px;
+    --header-height:        60px;
+    --main-frame-max-width: 85%;
+    --modal-min-width:      320px;
+    --modal-max-width:      1000px;
+    --content-padding:      var(--space-8);
+}

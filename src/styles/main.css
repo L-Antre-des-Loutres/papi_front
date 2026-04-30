@@ -1,0 +1,28 @@
+/* ============================================================
+   MAIN — Global stylesheet entry point
+   Import order matters: variables → reset → base → globals → utilities
+   ============================================================ */
+
+/* ── Variables ── */
+@import './variables/_palette.css';
+@import './variables/_colors.css';
+@import './variables/_effects.css';
+@import './variables/_layout.css';
+@import './variables/_spacing.css';
+@import './variables/_typography.css';
+@import './variables/_z-index.css';
+
+/* ── Base ── */
+@import './_reset.css';
+@import './_base.css';
+
+/* ── Shared component classes ── */
+@import './_buttons.css';
+@import './_forms.css';
+@import './_tables.css';
+@import './_tags.css';
+@import './_cards.css';
+@import './_matchup.css';
+
+/* ── Utilities ── */
+@import './_utilities.css';

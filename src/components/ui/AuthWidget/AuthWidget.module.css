@@ -1,0 +1,60 @@
+.trigger {
+    position: fixed;
+    bottom: var(--space-6);
+    left: var(--space-6);
+    z-index: var(--z-auth-widget);
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-full);
+    background: var(--color-accent);
+    color: var(--color-white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-accent);
+    transition: background var(--transition-fast), transform var(--transition-fast);
+    cursor: pointer;
+    border: none;
+}
+
+.trigger:hover { background: var(--color-save); transform: scale(1.05); }
+
+.trigger.authenticated { background: var(--color-save); }
+
+.trigger svg { width: 20px; height: 20px; }
+
+/* ── Popover ── */
+.popover {
+    position: fixed;
+    bottom: calc(var(--space-6) + 52px);
+    left: var(--space-6);
+    z-index: var(--z-auth-widget);
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+    box-shadow: var(--shadow-modal);
+    width: 280px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.popoverTitle {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-bold);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-1);
+}
+
+.error {
+    font-size: var(--text-xs);
+    color: var(--color-delete);
+}
+
+.actions {
+    display: flex;
+    gap: var(--space-2);
+    justify-content: flex-end;
+    margin-top: var(--space-1);
+}

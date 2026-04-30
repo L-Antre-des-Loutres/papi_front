@@ -1,0 +1,27 @@
+/* ============================================================
+   TYPOGRAPHY — Font families, sizes, weights, line heights
+   ============================================================ */
+
+:root {
+
+    /* ── fonts ── */
+    --font-display:    'Syne', sans-serif;
+    --font-body:       'DM Sans', sans-serif;
+
+    /* ── sizes ── */
+    --text-2xs:        0.625rem;
+    --text-xs:         0.70rem;
+    --text-sm:         0.825rem;
+    --text-base:       0.9375rem;
+    --text-lg:         1.0625rem;
+
+    /* ── weights ── */
+    --weight-normal:   400;
+    --weight-medium:   500;
+    --weight-semibold: 600;
+    --weight-bold:     700;
+    --weight-black:    800;
+
+    /* ── line height ── */
+    --leading-normal:  1.55;
+}

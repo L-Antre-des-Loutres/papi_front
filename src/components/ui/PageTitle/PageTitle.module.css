@@ -1,0 +1,21 @@
+.container {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: var(--space-4);
+}
+
+.imgContainer {
+    height: var(--space-14);
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+}
+
+.img {
+    width: auto;
+    height: 200%;
+    display: block;
+}

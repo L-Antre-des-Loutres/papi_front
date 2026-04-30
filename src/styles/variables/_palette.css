@@ -1,0 +1,39 @@
+/* ============================================================
+   PALETTE — Primitive colors
+   DO NOT USE THESE DIRECTLY — use semantic color variables instead
+   ============================================================ */
+
+:root {
+
+    /* ── solids ── */
+    --sand:          #F7F6F3;
+    --ink:           #16161A;
+    --ink-soft:      #1E1E24;
+    --green:         #3C6F29;
+    --green-dark:    #305522;
+    --blue:          #1E90FF;
+    --red:           #8B0000;
+    --orange:        #E8612A;
+    --white:         #FFFFFF;
+
+    /* ── grays ── */
+    --slate-subtle:  #E4E4E7;
+    --slate-light:   #C8C8D0;
+    --slate:         #A0A0AB;
+    --slate-mid:     #6B6B78;
+
+    /* ── frosted ── */
+    --sand-85:       rgba(247, 246, 243, 0.85);
+    --orange-28:     rgba(232, 97, 42, 0.28);
+
+    /* ── overlays ── */
+    --black-80:      rgba(0, 0, 0, 0.80);
+    --black-60:      rgba(0, 0, 0, 0.60);
+    --black-48:      rgba(0, 0, 0, 0.48);
+    --black-36:      rgba(0, 0, 0, 0.36);
+    --black-20:      rgba(0, 0, 0, 0.20);
+    --black-12:      rgba(0, 0, 0, 0.12);
+    --black-08:      rgba(0, 0, 0, 0.08);
+    --white-15:      rgba(255, 255, 255, 0.15);
+    --white-06:      rgba(255, 255, 255, 0.06);
+}

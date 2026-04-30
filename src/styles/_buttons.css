@@ -1,0 +1,64 @@
+/* ============================================================
+   BUTTONS — .btn and all variants
+   ============================================================ */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    cursor: pointer;
+    text-align: center;
+    justify-content: center;
+}
+
+.btn-sm {
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-xs);
+    border-radius: var(--radius-sm);
+}
+
+.btn-ghost {
+    color: var(--color-text-secondary);
+    padding: var(--space-2) var(--space-3);
+}
+
+.btn-ghost:hover {
+    background: var(--black-12);
+    color: var(--color-text-primary);
+}
+
+.btn-validate {
+    background: var(--color-save);
+    color: var(--color-text-inverse);
+}
+
+.btn-validate:hover { background: var(--color-save-validate); }
+
+.btn-cancel {
+    background: var(--rgb-darkest-background);
+    color: var(--color-text-inverse);
+}
+
+.btn-cancel:hover { background: var(--rgb-darkiest-background); }
+
+.btn-max-width {
+    width: 100%;
+    max-width: var(--main-frame-max-width);
+    padding: var(--space-3) var(--space-1);
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-overlay-close {
+    background: none;
+    border: none;
+    font-size: var(--text-lg);
+    cursor: pointer;
+    line-height: 1;
+}
