@@ -7,6 +7,7 @@ import { ENDPOINTS } from '../../api/endpoints';
 import { useToastStore } from '../../context/store/toastStore';
 import PageTitle from '../../components/ui/PageTitle/PageTitle';
 import PageLoader from '../../components/ui/PageLoader/PageLoader';
+import PokemonImagesCard from '../../components/ui/PokemonImagesCard/PokemonImagesCard';
 import styles from './PokemonDetails.module.css';
 
 const PLACEHOLDER_SPRITE = 'https://www.pokepedia.fr/images/f/f6/Pok%C3%A9_Poup%C3%A9e-CA.png';
@@ -388,6 +389,9 @@ export default function PokemonDetails() {
                     {numInput('catchRate', 'Catch rate')}
                     {numInput('maleRatio', 'Male ratio (%)')}
                 </div>
+
+                {/* Images — spans full width */}
+                <PokemonImagesCard pkmnId={pkmnId} />
 
                 {/* Stats — spans 2 columns */}
                 <div className="form-edit-card form-edit-stats-card">
