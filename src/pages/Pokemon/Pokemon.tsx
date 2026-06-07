@@ -1,14 +1,15 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import type { Page, Pkmn, PkmnTranslation, Move, Moveset, Type, Language } from '../../types';
-import { apiClient } from '../../api/client';
+import type { Page, Pkmn, PkmnTranslation, PkmnImage, Move, Moveset, Type, Language } from '../../types';
+import { apiClient, ApiError } from '../../api/client';
 import { ENDPOINTS } from '../../api/endpoints';
 import { useToastStore } from '../../context/store/toastStore';
 import PageTitle from '../../components/ui/PageTitle/PageTitle';
 import PageLoader from '../../components/ui/PageLoader/PageLoader';
 import LangModal from '../../components/ui/LangModal/LangModal';
 import MovesetModal from '../../components/ui/MovesetModal/MovesetModal';
+import PokemonImagesModal from '../../components/ui/PokemonImagesModal/PokemonImagesModal';
 import styles from './Pokemon.module.css';
 
 const LANGUAGES: Language[] = ['FR', 'EN'];
@@ -40,6 +41,55 @@ const EDIT_ICON = (
     </svg>
 );
 
+const IMAGE_ICON = (
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+        <path d="M2 2h12v12H2V2zm1 1v10h10V3H3zm2 2h2v2H5V5zm5 3l-3 4h7l-2-2-1 1-1-3z" fill="#ffffff" />
+    </svg>
+);
+
+function PokemonSpriteCell({ pkmnId, pkmnName, onClick }: { pkmnId: number; pkmnName: string; onClick: () => void }) {
+    const { data: mainImage } = useQuery<PkmnImage | null>({
+        queryKey: ['pkmn-image-main', pkmnId],
+        queryFn: async () => {
+            try {
+                return await apiClient.get<PkmnImage>(ENDPOINTS.pokemon.imageMain(pkmnId));
+            } catch (err) {
+                if (err instanceof ApiError && err.status === 404) return null;
+                // Treat other failures as "no main image" rather than poisoning the UI.
+                return null;
+            }
+        },
+        staleTime: 60_000,
+        retry: false,
+    });
+
+    const src = mainImage?.url ?? PLACEHOLDER_SPRITE;
+
+    return (
+        <button
+            type="button"
+            className={styles.spriteButton}
+            onClick={onClick}
+            aria-label={`Manage images for ${pkmnName}`}
+            title="Manage images"
+        >
+            <img
+                className={styles.spriteImg}
+                src={src}
+                alt={pkmnName}
+                decoding="async"
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                    if (e.currentTarget.src !== PLACEHOLDER_SPRITE) {
+                        e.currentTarget.src = PLACEHOLDER_SPRITE;
+                    }
+                }}
+            />
+            <span className={styles.spriteOverlay}>{IMAGE_ICON}</span>
+        </button>
+    );
+}
+
 type TranslationMap = Record<Language, { pkmnName: string; formName: string; description: string }>;
 
 function emptyTranslations(): TranslationMap {
@@ -55,6 +105,7 @@ export default function Pokemon() {
 
     const [langModalId, setLangModalId]     = useState<number | null>(null);
     const [movesetPkmnId, setMovesetPkmnId] = useState<number | null>(null);
+    const [imagesPkmnId, setImagesPkmnId]   = useState<number | null>(null);
 
     const { data: pokemon = [], isLoading } = useQuery({
         queryKey: ['pokemon'],
@@ -172,11 +223,10 @@ export default function Pokemon() {
                             <tr key={pkmn.id} className="table-tr-base-height">
                                 <td>
                                     <div className={styles.sprite}>
-                                        <img
-                                            className={styles.spriteImg}
-                                            src={PLACEHOLDER_SPRITE}
-                                            alt={pkmn.symbol}
-                                            decoding="async"
+                                        <PokemonSpriteCell
+                                            pkmnId={pkmn.id}
+                                            pkmnName={pkmn.symbol}
+                                            onClick={() => setImagesPkmnId(pkmn.id)}
                                         />
                                     </div>
                                 </td>
@@ -310,6 +360,14 @@ export default function Pokemon() {
                     moveset={moveset}
                     availableMoves={moves}
                     onClose={() => setMovesetPkmnId(null)}
+                />
+            )}
+
+            {imagesPkmnId != null && (
+                <PokemonImagesModal
+                    pkmnId={imagesPkmnId}
+                    pkmnName={pokemon.find((p) => p.id === imagesPkmnId)?.symbol ?? ''}
+                    onClose={() => setImagesPkmnId(null)}
                 />
             )}
         </>

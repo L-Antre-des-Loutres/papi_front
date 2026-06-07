@@ -2,4 +2,36 @@
 .dexInput     { width: 80px; }
 .typeSelect   { width: 110px; }
 .sprite       { display: flex; justify-content: center; align-items: center; }
-.spriteImg    { width: 64px; height: 64px; image-rendering: pixelated; }
+.spriteImg    { width: 64px; height: 64px; image-rendering: pixelated; object-fit: contain; }
+
+.spriteButton {
+    position: relative;
+    width: 64px;
+    height: 64px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.spriteButton:hover { box-shadow: 0 0 0 2px var(--color-validate, #006b9f); }
+.spriteButton:focus-visible { outline: 2px solid var(--color-validate, #006b9f); outline-offset: 2px; }
+
+.spriteOverlay {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    background: rgba(0, 107, 159, 0.85);
+    color: #fff;
+    padding: 2px 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 120ms ease;
+    pointer-events: none;
+}
+.spriteButton:hover .spriteOverlay,
+.spriteButton:focus-visible .spriteOverlay { opacity: 1; }

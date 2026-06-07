@@ -46,6 +46,10 @@ export const ENDPOINTS = {
         translation:      (id: number, lang: string) => `/api/pokemon/${id}/translations/${lang}`,
         moveset:          (id: number) => `/api/pokemon/${id}/moveset`,
         movesetEntry:     (id: number, entryId: number) => `/api/pokemon/${id}/moveset/${entryId}`,
+        images:           (id: number) => `/api/pokemon/${id}/images`,
+        imageMain:        (id: number) => `/api/pokemon/${id}/images/main`,
+        imageById:        (id: number, imageId: number) => `/api/pokemon/${id}/images/${imageId}`,
+        promoteImageMain: (id: number, imageId: number) => `/api/pokemon/${id}/images/${imageId}/main`,
     },
 
     types: {

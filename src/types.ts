@@ -204,3 +204,21 @@ export interface ErrorResponse {
     message: string;
     timestamp: string;
 }
+
+// ── PkmnImage ─────────────────────────────────────────────────────────────────
+
+export interface PkmnImage {
+    id: number;
+    url: string;
+    name: string | null;
+    tags: string[];
+    main: boolean;
+    addedAt: string;
+}
+
+export interface PkmnImageRequest {
+    url: string;
+    name?: string | null;
+    tags?: string[] | null;
+    main: boolean;
+}
