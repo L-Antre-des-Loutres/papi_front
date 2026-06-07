@@ -61,25 +61,27 @@ export default function PokemonImagesModal({ pkmnId, pkmnName, onClose }: Pokemo
     };
 
     const addMutation = useMutation({
-        mutationFn: () => {
-            const tags = tagsInput
+        mutationFn: (snapshot: { url: string; name: string; tagsInput: string; main: boolean }) => {
+            const tags = snapshot.tagsInput
                 .split(',')
                 .map((t) => t.trim())
                 .filter(Boolean);
             const body: PkmnImageRequest = {
-                url: url.trim(),
-                name: name.trim() || null,
+                url: snapshot.url.trim(),
+                name: snapshot.name.trim() || null,
                 tags,
-                main,
+                main: snapshot.main,
             };
             return apiClient.post<PkmnImage>(ENDPOINTS.pokemon.images(pkmnId), body);
         },
-        onSuccess: () => {
+        // Only clear fields the user hasn't modified since clicking Add, so an in-flight
+        // submission doesn't wipe new typing.
+        onSuccess: (_data, snapshot) => {
             invalidate();
-            setUrl('');
-            setName('');
-            setTagsInput('');
-            setMain(false);
+            setUrl((current)       => current === snapshot.url       ? '' : current);
+            setName((current)      => current === snapshot.name      ? '' : current);
+            setTagsInput((current) => current === snapshot.tagsInput ? '' : current);
+            setMain((current)      => current === snapshot.main      ? false : current);
             addToast('Image added', 'success');
         },
         onError: () => addToast('Failed to add image', 'error'),
@@ -175,7 +177,7 @@ export default function PokemonImagesModal({ pkmnId, pkmnName, onClose }: Pokemo
                         </label>
                         <button
                             className="btn btn-validate btn-sm"
-                            onClick={() => addMutation.mutate()}
+                            onClick={() => addMutation.mutate({ url, name, tagsInput, main })}
                             disabled={!urlIsValid || addMutation.isPending}
                         >
                             Add image

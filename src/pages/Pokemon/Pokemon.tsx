@@ -54,9 +54,9 @@ function PokemonSpriteCell({ pkmnId, pkmnName, onClick }: { pkmnId: number; pkmn
             try {
                 return await apiClient.get<PkmnImage>(ENDPOINTS.pokemon.imageMain(pkmnId));
             } catch (err) {
+                // 404 = no main image yet; let TanStack Query surface the other errors normally.
                 if (err instanceof ApiError && err.status === 404) return null;
-                // Treat other failures as "no main image" rather than poisoning the UI.
-                return null;
+                throw err;
             }
         },
         staleTime: 60_000,

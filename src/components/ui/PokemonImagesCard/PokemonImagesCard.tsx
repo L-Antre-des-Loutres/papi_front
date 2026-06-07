@@ -44,6 +44,11 @@ interface EditDraft {
     main: boolean;
 }
 
+interface EditState {
+    id: number;
+    draft: EditDraft;
+}
+
 function draftFromImage(img: PkmnImage): EditDraft {
     return {
         url: img.url,
@@ -66,8 +71,7 @@ export default function PokemonImagesCard({ pkmnId }: PokemonImagesCardProps) {
     const [tagsInput, setTagsInput] = useState('');
     const [main, setMain]           = useState(false);
 
-    const [editingId, setEditingId] = useState<number | null>(null);
-    const [editDraft, setEditDraft] = useState<EditDraft | null>(null);
+    const [editing, setEditing] = useState<EditState | null>(null);
 
     const { data: images = [], isLoading } = useQuery({
         queryKey: ['pkmn-images', pkmnId],
@@ -85,21 +89,23 @@ export default function PokemonImagesCard({ pkmnId }: PokemonImagesCardProps) {
     };
 
     const addMutation = useMutation({
-        mutationFn: () => {
+        mutationFn: (snapshot: { url: string; name: string; tagsInput: string; main: boolean }) => {
             const body: PkmnImageRequest = {
-                url: url.trim(),
-                name: name.trim() || null,
-                tags: parseTags(tagsInput),
-                main,
+                url: snapshot.url.trim(),
+                name: snapshot.name.trim() || null,
+                tags: parseTags(snapshot.tagsInput),
+                main: snapshot.main,
             };
             return apiClient.post<PkmnImage>(ENDPOINTS.pokemon.images(pkmnId), body);
         },
-        onSuccess: () => {
+        // Only clear fields the user hasn't modified since clicking Add, so an in-flight
+        // submission doesn't wipe new typing.
+        onSuccess: (_data, snapshot) => {
             invalidate();
-            setUrl('');
-            setName('');
-            setTagsInput('');
-            setMain(false);
+            setUrl((current)       => current === snapshot.url       ? '' : current);
+            setName((current)      => current === snapshot.name      ? '' : current);
+            setTagsInput((current) => current === snapshot.tagsInput ? '' : current);
+            setMain((current)      => current === snapshot.main      ? false : current);
             addToast('Image added', 'success');
         },
         onError: () => addToast('Failed to add image', 'error'),
@@ -108,10 +114,10 @@ export default function PokemonImagesCard({ pkmnId }: PokemonImagesCardProps) {
     const editMutation = useMutation({
         mutationFn: ({ imageId, body }: { imageId: number; body: PkmnImageRequest }) =>
             apiClient.patch<PkmnImage>(ENDPOINTS.pokemon.imageById(pkmnId, imageId), body),
-        onSuccess: () => {
+        onSuccess: (_data, variables) => {
             invalidate();
-            setEditingId(null);
-            setEditDraft(null);
+            // Only exit edit mode if the user hasn't moved on to editing a different image.
+            setEditing((current) => (current?.id === variables.imageId ? null : current));
             addToast('Image updated', 'success');
         },
         onError: () => addToast('Failed to update image', 'error'),
@@ -138,31 +144,33 @@ export default function PokemonImagesCard({ pkmnId }: PokemonImagesCardProps) {
     });
 
     function startEdit(img: PkmnImage) {
-        setEditingId(img.id);
-        setEditDraft(draftFromImage(img));
+        setEditing({ id: img.id, draft: draftFromImage(img) });
     }
 
     function cancelEdit() {
-        setEditingId(null);
-        setEditDraft(null);
+        setEditing(null);
+    }
+
+    function updateDraft(patch: Partial<EditDraft>) {
+        setEditing((current) => current ? { ...current, draft: { ...current.draft, ...patch } } : current);
     }
 
     function saveEdit() {
-        if (editingId == null || !editDraft) return;
+        if (!editing) return;
         const body: PkmnImageRequest = {
-            url: editDraft.url.trim(),
-            name: editDraft.name.trim() || null,
-            tags: parseTags(editDraft.tagsInput),
-            main: editDraft.main,
+            url: editing.draft.url.trim(),
+            name: editing.draft.name.trim() || null,
+            tags: parseTags(editing.draft.tagsInput),
+            main: editing.draft.main,
         };
-        editMutation.mutate({ imageId: editingId, body });
+        editMutation.mutate({ imageId: editing.id, body });
     }
 
     const trimmedUrl   = url.trim();
     const addUrlValid  = trimmedUrl.length > 0 && isSafeImageUrl(trimmedUrl);
     const addUrlTouched = trimmedUrl.length > 0;
 
-    const editUrlValid = editDraft ? isSafeImageUrl(editDraft.url.trim()) : false;
+    const editUrlValid = editing ? isSafeImageUrl(editing.draft.url.trim()) : false;
 
     return (
         <div className={`form-edit-card ${styles.card}`}>
@@ -219,7 +227,7 @@ export default function PokemonImagesCard({ pkmnId }: PokemonImagesCardProps) {
                     <button
                         type="button"
                         className="btn btn-validate btn-sm"
-                        onClick={() => addMutation.mutate()}
+                        onClick={() => addMutation.mutate({ url, name, tagsInput, main })}
                         disabled={!addUrlValid || addMutation.isPending}
                     >
                         Add image
@@ -233,7 +241,7 @@ export default function PokemonImagesCard({ pkmnId }: PokemonImagesCardProps) {
                     <p className={styles.muted}>No custom images yet.</p>
                 )}
                 {sortedImages.map((img) => {
-                    const isEditing = editingId === img.id;
+                    const isEditing = editing?.id === img.id;
                     return (
                         <div key={img.id} className={`${styles.tile} ${img.main ? styles.tileMain : ''}`}>
                             <div className={styles.thumbWrap}>
@@ -252,15 +260,15 @@ export default function PokemonImagesCard({ pkmnId }: PokemonImagesCardProps) {
                                 {img.main && <span className={styles.mainBadge}>★ Main</span>}
                             </div>
 
-                            {isEditing && editDraft ? (
+                            {isEditing && editing ? (
                                 <div className={styles.editBody}>
                                     <div className="field">
                                         <label className="field-label">URL</label>
                                         <input
                                             className="global-text-input full-width"
                                             type="url"
-                                            value={editDraft.url}
-                                            onChange={(e) => setEditDraft({ ...editDraft, url: e.target.value })}
+                                            value={editing.draft.url}
+                                            onChange={(e) => updateDraft({ url: e.target.value })}
                                         />
                                         {!editUrlValid && (
                                             <small className={styles.error}>Invalid URL.</small>
@@ -271,8 +279,8 @@ export default function PokemonImagesCard({ pkmnId }: PokemonImagesCardProps) {
                                         <input
                                             className="global-text-input full-width"
                                             type="text"
-                                            value={editDraft.name}
-                                            onChange={(e) => setEditDraft({ ...editDraft, name: e.target.value })}
+                                            value={editing.draft.name}
+                                            onChange={(e) => updateDraft({ name: e.target.value })}
                                         />
                                     </div>
                                     <div className="field">
@@ -280,15 +288,15 @@ export default function PokemonImagesCard({ pkmnId }: PokemonImagesCardProps) {
                                         <input
                                             className="global-text-input full-width"
                                             type="text"
-                                            value={editDraft.tagsInput}
-                                            onChange={(e) => setEditDraft({ ...editDraft, tagsInput: e.target.value })}
+                                            value={editing.draft.tagsInput}
+                                            onChange={(e) => updateDraft({ tagsInput: e.target.value })}
                                         />
                                     </div>
                                     <label className={styles.mainCheckbox}>
                                         <input
                                             type="checkbox"
-                                            checked={editDraft.main}
-                                            onChange={(e) => setEditDraft({ ...editDraft, main: e.target.checked })}
+                                            checked={editing.draft.main}
+                                            onChange={(e) => updateDraft({ main: e.target.checked })}
                                         />
                                         <span>Main image</span>
                                     </label>
