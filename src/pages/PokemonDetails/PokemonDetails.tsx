@@ -390,9 +390,6 @@ export default function PokemonDetails() {
                     {numInput('maleRatio', 'Male ratio (%)')}
                 </div>
 
-                {/* Images — spans full width */}
-                <PokemonImagesCard pkmnId={pkmnId} />
-
                 {/* Stats — spans 2 columns */}
                 <div className="form-edit-card form-edit-stats-card">
                     <h2 className="form-edit-card-title">Stats</h2>
@@ -425,6 +422,9 @@ export default function PokemonDetails() {
                         </div>
                     </div>
                 </div>
+
+                {/* Images — spans full width */}
+                <PokemonImagesCard pkmnId={pkmnId} />
 
             </div>
 
