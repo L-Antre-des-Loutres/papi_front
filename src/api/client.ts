@@ -54,7 +54,7 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
 
     if (!response.ok) {
         const body = await response.text();
-        throw new Error(body || `HTTP ${response.status} ${response.statusText}`);
+        throw new ApiError(response.status, body || `HTTP ${response.status} ${response.statusText}`);
     }
 
     if (response.status === 204) return undefined as T;
