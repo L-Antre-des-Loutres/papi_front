@@ -1,7 +1,7 @@
 services:
   papi-frontend:
     build: .
-    container_name: papi-frontend
+    container_name: site-papi
     ports:
       - "8088:80"
     networks:
