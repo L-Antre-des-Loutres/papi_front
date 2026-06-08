@@ -52,6 +52,11 @@ export default function Moves() {
     const moves       = movesPages?.pages.flatMap((p) => p.content) ?? [];
     const totalElements = movesPages?.pages[0]?.totalElements ?? 0;
 
+    const BASE_SIZES = [20, 50, 100, 200];
+    const pageSizeOptions = totalElements > 0
+        ? [...BASE_SIZES.filter((n) => n < totalElements), totalElements]
+        : BASE_SIZES;
+
     const { data: types = [] } = useQuery({
         queryKey: ['types'],
         queryFn: () => apiClient.get<Page<Type>>(ENDPOINTS.types.base + '?size=200').then((p) => p.content),
@@ -139,7 +144,7 @@ export default function Moves() {
                         value={size}
                         onChange={(e) => setSize(Number(e.target.value))}
                     >
-                        {[20, 50, 100, 200].map((n) => <option key={n} value={n}>{n}</option>)}
+                        {pageSizeOptions.map((n) => <option key={n} value={n}>{n}</option>)}
                     </select>
                 </div>
             </div>
