@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Page, Move, MoveTranslation, Type, Language } from '../../types';
 import { apiClient } from '../../api/client';
 import { ENDPOINTS } from '../../api/endpoints';
@@ -33,11 +33,24 @@ export default function Moves() {
     const queryClient = useQueryClient();
     const addToast    = useToastStore((s) => s.addToast);
     const [modalId, setModalId] = useState<number | null>(null);
+    const [size, setSize] = useState(50);
 
-    const { data: moves = [], isLoading } = useQuery({
-        queryKey: ['moves'],
-        queryFn: () => apiClient.get<Page<Move>>(ENDPOINTS.moves.base + '?size=200').then((p) => p.content),
+    const {
+        data: movesPages,
+        isLoading,
+        hasNextPage,
+        fetchNextPage,
+        isFetchingNextPage,
+    } = useInfiniteQuery({
+        queryKey: ['moves', size],
+        queryFn: ({ pageParam }: { pageParam: number }) =>
+            apiClient.get<Page<Move>>(`${ENDPOINTS.moves.base}?page=${pageParam}&size=${size}`),
+        getNextPageParam: (lastPage) => lastPage.last ? undefined : lastPage.number + 1,
+        initialPageParam: 0,
     });
+
+    const moves       = movesPages?.pages.flatMap((p) => p.content) ?? [];
+    const totalElements = movesPages?.pages[0]?.totalElements ?? 0;
 
     const { data: types = [] } = useQuery({
         queryKey: ['types'],
@@ -115,6 +128,21 @@ export default function Moves() {
             {isLoading && <PageLoader />}
             <PageTitle title="Moves" imageSrc="/img/mons/urshifu.png" />
             <h2>List of moves</h2>
+
+            <div className="table-toolbar">
+                <span className="table-toolbar-count">{moves.length} / {totalElements}</span>
+                <div className="table-toolbar-size">
+                    <label htmlFor="moves-page-size">Lignes par page</label>
+                    <select
+                        id="moves-page-size"
+                        className="global-text-input"
+                        value={size}
+                        onChange={(e) => setSize(Number(e.target.value))}
+                    >
+                        {[20, 50, 100, 200].map((n) => <option key={n} value={n}>{n}</option>)}
+                    </select>
+                </div>
+            </div>
 
             <div className="table-scroll-wrapper">
                 <table className="global-content-table">
@@ -199,6 +227,16 @@ export default function Moves() {
                     </tbody>
                 </table>
             </div>
+
+            {hasNextPage && (
+                <button
+                    className="btn-max-width btn-cancel"
+                    onClick={() => fetchNextPage()}
+                    disabled={isFetchingNextPage}
+                >
+                    {isFetchingNextPage ? 'Chargement...' : 'Charger plus'}
+                </button>
+            )}
 
             <button
                 className="btn-max-width btn-validate"

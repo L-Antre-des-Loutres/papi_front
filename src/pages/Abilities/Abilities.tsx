@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Page, Ability, AbilityTranslation, Language } from '../../types';
 import { apiClient } from '../../api/client';
 import { ENDPOINTS } from '../../api/endpoints';
@@ -33,11 +33,24 @@ export default function Abilities() {
     const queryClient  = useQueryClient();
     const addToast     = useToastStore((s) => s.addToast);
     const [modalId, setModalId] = useState<number | null>(null);
+    const [size, setSize] = useState(50);
 
-    const { data: abilities = [], isLoading } = useQuery({
-        queryKey: ['abilities'],
-        queryFn: () => apiClient.get<Page<Ability>>(ENDPOINTS.abilities.base + '?size=200').then((p) => p.content),
+    const {
+        data: abilitiesPages,
+        isLoading,
+        hasNextPage,
+        fetchNextPage,
+        isFetchingNextPage,
+    } = useInfiniteQuery({
+        queryKey: ['abilities', size],
+        queryFn: ({ pageParam }: { pageParam: number }) =>
+            apiClient.get<Page<Ability>>(`${ENDPOINTS.abilities.base}?page=${pageParam}&size=${size}`),
+        getNextPageParam: (lastPage) => lastPage.last ? undefined : lastPage.number + 1,
+        initialPageParam: 0,
     });
+
+    const abilities     = abilitiesPages?.pages.flatMap((p) => p.content) ?? [];
+    const totalElements = abilitiesPages?.pages[0]?.totalElements ?? 0;
 
     const { data: fetchedTranslations } = useQuery({
         queryKey: ['ability-translations', modalId],
@@ -112,6 +125,21 @@ export default function Abilities() {
             <PageTitle title="Abilities" imageSrc="/img/mons/aegislash.png" />
             <h2>List of abilities</h2>
 
+            <div className="table-toolbar">
+                <span className="table-toolbar-count">{abilities.length} / {totalElements}</span>
+                <div className="table-toolbar-size">
+                    <label htmlFor="abilities-page-size">Lignes par page</label>
+                    <select
+                        id="abilities-page-size"
+                        className="global-text-input"
+                        value={size}
+                        onChange={(e) => setSize(Number(e.target.value))}
+                    >
+                        {[20, 50, 100, 200].map((n) => <option key={n} value={n}>{n}</option>)}
+                    </select>
+                </div>
+            </div>
+
             <div className="table-scroll-wrapper">
                 <table className="global-content-table">
                     <thead>
@@ -149,6 +177,16 @@ export default function Abilities() {
                     </tbody>
                 </table>
             </div>
+
+            {hasNextPage && (
+                <button
+                    className="btn-max-width btn-cancel"
+                    onClick={() => fetchNextPage()}
+                    disabled={isFetchingNextPage}
+                >
+                    {isFetchingNextPage ? 'Chargement...' : 'Charger plus'}
+                </button>
+            )}
 
             <button
                 className="btn-max-width btn-validate"

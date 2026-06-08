@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Page, Pkmn, PkmnTranslation, PkmnImage, Move, Moveset, Type, Language } from '../../types';
 import { apiClient, ApiError } from '../../api/client';
 import { ENDPOINTS } from '../../api/endpoints';
@@ -106,11 +106,24 @@ export default function Pokemon() {
     const [langModalId, setLangModalId]     = useState<number | null>(null);
     const [movesetPkmnId, setMovesetPkmnId] = useState<number | null>(null);
     const [imagesPkmnId, setImagesPkmnId]   = useState<number | null>(null);
+    const [size, setSize] = useState(50);
 
-    const { data: pokemon = [], isLoading } = useQuery({
-        queryKey: ['pokemon'],
-        queryFn: () => apiClient.get<Page<Pkmn>>(ENDPOINTS.pokemon.base + '?size=200').then((p) => p.content),
+    const {
+        data: pokemonPages,
+        isLoading,
+        hasNextPage,
+        fetchNextPage,
+        isFetchingNextPage,
+    } = useInfiniteQuery({
+        queryKey: ['pokemon', size],
+        queryFn: ({ pageParam }: { pageParam: number }) =>
+            apiClient.get<Page<Pkmn>>(`${ENDPOINTS.pokemon.base}?page=${pageParam}&size=${size}`),
+        getNextPageParam: (lastPage) => lastPage.last ? undefined : lastPage.number + 1,
+        initialPageParam: 0,
     });
+
+    const pokemon        = pokemonPages?.pages.flatMap((p) => p.content) ?? [];
+    const totalElements  = pokemonPages?.pages[0]?.totalElements ?? 0;
 
     const { data: types = [] } = useQuery({
         queryKey: ['types'],
@@ -201,6 +214,21 @@ export default function Pokemon() {
             {isLoading && <PageLoader />}
             <PageTitle title="Pokémon" imageSrc="/img/mons/garchomp.png" />
             <h2>List of Pokémon</h2>
+
+            <div className="table-toolbar">
+                <span className="table-toolbar-count">{pokemon.length} / {totalElements}</span>
+                <div className="table-toolbar-size">
+                    <label htmlFor="pokemon-page-size">Lignes par page</label>
+                    <select
+                        id="pokemon-page-size"
+                        className="global-text-input"
+                        value={size}
+                        onChange={(e) => setSize(Number(e.target.value))}
+                    >
+                        {[20, 50, 100, 200].map((n) => <option key={n} value={n}>{n}</option>)}
+                    </select>
+                </div>
+            </div>
 
             <div className="table-scroll-wrapper">
                 <table className="global-content-table">
@@ -300,6 +328,16 @@ export default function Pokemon() {
                     </tbody>
                 </table>
             </div>
+
+            {hasNextPage && (
+                <button
+                    className="btn-max-width btn-cancel"
+                    onClick={() => fetchNextPage()}
+                    disabled={isFetchingNextPage}
+                >
+                    {isFetchingNextPage ? 'Chargement...' : 'Charger plus'}
+                </button>
+            )}
 
             <button
                 className="btn-max-width btn-validate"
