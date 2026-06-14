@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import type { Page, User } from '../../types';
-import { apiClient } from '../../api/client';
+import { apiClient, getApiErrorMessage } from '../../api/client';
 import { ENDPOINTS } from '../../api/endpoints';
 import { useToastStore } from '../../context/store/toastStore';
 import PageTitle from '../../components/ui/PageTitle/PageTitle';
@@ -49,7 +49,7 @@ export default function Users() {
             setCreateForm(EMPTY_FORM);
             addToast('User created', 'success');
         },
-        onError: () => addToast('Failed to create user', 'error'),
+        onError: (err) => addToast(getApiErrorMessage(err, 'Failed to create user'), 'error'),
     });
 
     const updateUser = useMutation({
@@ -63,7 +63,7 @@ export default function Users() {
             setEditingUser(null);
             addToast('User updated', 'success');
         },
-        onError: () => addToast('Failed to update user', 'error'),
+        onError: (err) => addToast(getApiErrorMessage(err, 'Failed to update user'), 'error'),
     });
 
     const deleteUser = useMutation({
@@ -78,6 +78,23 @@ export default function Users() {
     function startEdit(user: User) {
         setEditingUser(user);
         setEditForm({ username: user.username, password: '', role: user.role });
+    }
+
+    function handleCreate() {
+        if (createForm.password.length < 8) {
+            addToast('Password must be at least 8 characters', 'error');
+            return;
+        }
+        createUser.mutate();
+    }
+
+    function handleUpdate() {
+        // Password is optional on edit; only validate length when the user is changing it.
+        if (editForm.password && editForm.password.length < 8) {
+            addToast('Password must be at least 8 characters', 'error');
+            return;
+        }
+        updateUser.mutate();
     }
 
     return (
@@ -144,6 +161,7 @@ export default function Users() {
                                 type="password"
                                 value={createForm.password}
                                 onChange={(e) => setCreateForm((p) => ({ ...p, password: e.target.value }))}
+                                minLength={8}
                                 required
                             />
                         </div>
@@ -162,7 +180,7 @@ export default function Users() {
                         <div style={{ display: 'flex', gap: 'var(--space-2)', marginTop: 'var(--space-2)' }}>
                             <button
                                 className="btn btn-validate full-width"
-                                onClick={() => createUser.mutate()}
+                                onClick={handleCreate}
                                 disabled={createUser.isPending}
                             >
                                 Create user
@@ -204,6 +222,7 @@ export default function Users() {
                                 type="password"
                                 value={editForm.password}
                                 onChange={(e) => setEditForm((p) => ({ ...p, password: e.target.value }))}
+                                minLength={8}
                             />
                         </div>
                         <div className="field">
@@ -225,7 +244,7 @@ export default function Users() {
                             <button
                                 className="btn btn-validate"
                                 style={{ width: '50%' }}
-                                onClick={() => updateUser.mutate()}
+                                onClick={handleUpdate}
                                 disabled={updateUser.isPending}
                             >
                                 Save changes

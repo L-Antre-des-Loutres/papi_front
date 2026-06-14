@@ -62,6 +62,24 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
     return response.json() as Promise<T>;
 }
 
+/**
+ * Extracts a human-readable message from a thrown ApiError. The backend returns a JSON
+ * ErrorResponse ({ status, error, message, timestamp }); we surface its `message` field.
+ * Falls back to the raw body, then to the provided fallback.
+ */
+export function getApiErrorMessage(err: unknown, fallback: string): string {
+    if (err instanceof ApiError) {
+        try {
+            const parsed = JSON.parse(err.message) as { message?: unknown };
+            if (typeof parsed.message === 'string' && parsed.message.trim()) return parsed.message;
+        } catch {
+            // body wasn't JSON; fall through to the raw message
+        }
+        if (err.message.trim()) return err.message;
+    }
+    return fallback;
+}
+
 export function buildPageParams(query?: PageQuery): string {
     if (!query) return '';
     const params = new URLSearchParams();
