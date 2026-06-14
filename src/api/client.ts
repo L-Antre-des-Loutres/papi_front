@@ -33,7 +33,7 @@ function buildHeaders(extra?: HeadersInit): HeadersInit {
     };
 }
 
-async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+async function fetchChecked(path: string, options: RequestInit = {}): Promise<Response> {
     const response = await fetch(`${getBaseUrl()}${path}`, {
         ...options,
         headers: buildHeaders(options.headers),
@@ -57,9 +57,18 @@ async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
         throw new ApiError(response.status, body || `HTTP ${response.status} ${response.statusText}`);
     }
 
-    if (response.status === 204) return undefined as T;
+    return response;
+}
 
+async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
+    const response = await fetchChecked(path, options);
+    if (response.status === 204) return undefined as T;
     return response.json() as Promise<T>;
+}
+
+async function requestBlob(path: string, options: RequestInit = {}): Promise<Blob> {
+    const response = await fetchChecked(path, options);
+    return response.blob();
 }
 
 /**
@@ -94,7 +103,8 @@ export function buildPageParams(query?: PageQuery): string {
 }
 
 export const apiClient = {
-    get:    <T>(path: string)                   => request<T>(path, { method: 'GET' }),
+    get:     <T>(path: string)                  => request<T>(path, { method: 'GET' }),
+    getBlob: (path: string)                     => requestBlob(path, { method: 'GET' }),
     post:   <T>(path: string, body?: unknown)   => request<T>(path, { method: 'POST',  body: JSON.stringify(body) }),
     put:    <T>(path: string, body?: unknown)   => request<T>(path, { method: 'PUT',   body: JSON.stringify(body) }),
     patch:  <T>(path: string, body?: unknown)   => request<T>(path, { method: 'PATCH', body: JSON.stringify(body) }),

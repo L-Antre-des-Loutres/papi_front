@@ -222,3 +222,12 @@ export interface PkmnImageRequest {
     tags?: string[] | null;
     main: boolean;
 }
+
+// ── Image generation ────────────────────────────────────────────────────────
+
+export interface ImageResponse {
+    filename: string;
+    contentType: string;
+    size: number;
+    url: string;
+}

@@ -12,6 +12,12 @@
     transition: transform 0.3s ease;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
     background-color: #000;
+    /* resets so a <button> rendering matches the <Link>/<div> variants */
+    width: 100%;
+    padding: 0;
+    border: none;
+    font: inherit;
+    cursor: pointer;
 }
 
 .card:hover { transform: translateY(-5px); }

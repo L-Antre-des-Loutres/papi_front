@@ -79,4 +79,9 @@ export const ENDPOINTS = {
         byId:  (id: number) => `/api/users/${id}`,
     },
 
+    images: {
+        generatePokemon: (id: number) => `/api/images/generate/pokemon/${id}`,
+        byFilename:      (filename: string) => `/api/images/${filename}`,
+    },
+
 } as const;
