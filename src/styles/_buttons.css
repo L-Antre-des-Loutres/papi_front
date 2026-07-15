@@ -47,6 +47,11 @@
 
 .btn-cancel:hover { background: var(--rgb-darkiest-background); }
 
+.btn-delete {
+    background: var(--color-delete);
+    color: var(--color-text-inverse);
+}
+
 .btn-max-width {
     width: 100%;
     max-width: var(--main-frame-max-width);

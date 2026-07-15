@@ -345,8 +345,7 @@ export default function PokemonImagesCard({ pkmnId }: PokemonImagesCardProps) {
                                         )}
                                         <button
                                             type="button"
-                                            className="btn btn-sm"
-                                            style={{ background: 'var(--color-delete)', color: 'white' }}
+                                            className="btn btn-sm btn-delete"
                                             onClick={() => deleteMutation.mutate(img.id)}
                                             disabled={deleteMutation.isPending}
                                         >

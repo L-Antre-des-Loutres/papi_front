@@ -77,7 +77,7 @@ export default function AuthWidget() {
                     ) : (
                         <div className={styles.actions}>
                             <button className="btn btn-cancel btn-sm" onClick={() => setOpen(false)}>Close</button>
-                            <button className="btn btn-sm" style={{ background: 'var(--color-delete)', color: 'white' }} onClick={() => { clearToken(); setOpen(false); }}>
+                            <button className="btn btn-sm btn-delete" onClick={() => { clearToken(); setOpen(false); }}>
                                 Clear Token
                             </button>
                         </div>

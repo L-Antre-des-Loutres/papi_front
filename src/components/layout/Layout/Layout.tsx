@@ -9,7 +9,6 @@ import styles from './Layout.module.css';
 
 function LayoutContent() {
     const { collapsed, mobileOpen, closeMobile } = useSidebar();
-    const marginLeft = collapsed ? 'var(--sidebar-collapsed)' : 'var(--sidebar-width)';
 
     return (
         <div className={styles.wrapper}>
@@ -17,7 +16,7 @@ function LayoutContent() {
 
             {mobileOpen && <div className={styles.overlay} onClick={closeMobile} />}
 
-            <div className={styles.content} style={{ marginLeft }}>
+            <div className={`${styles.content} ${collapsed ? styles.contentCollapsed : ''}`}>
                 <Header />
 
                 <main className={styles.main}>

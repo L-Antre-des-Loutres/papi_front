@@ -44,10 +44,9 @@ export default function Login() {
 
                     <div className="form-edit-card-main-border form-edit-card-main-image-container">
                         <img
-                            className="form-edit-card-main-image"
+                            className={`form-edit-card-main-image ${styles.mascot}`}
                             src="/img/mons/mew.png"
                             alt="mew"
-                            style={{ imageRendering: 'auto', padding: 0, width: '16em' }}
                         />
                     </div>
 
@@ -82,10 +81,9 @@ export default function Login() {
                         {error && <p className={styles.error}>{error}</p>}
 
                         <button
-                            className="btn btn-validate full-width"
+                            className={`btn btn-validate full-width ${styles.submitBtn}`}
                             type="submit"
                             disabled={loading}
-                            style={{ marginTop: 'var(--space-3)' }}
                         >
                             {loading ? 'Signing in…' : 'Sign in'}
                         </button>

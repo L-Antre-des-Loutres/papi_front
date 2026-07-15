@@ -112,7 +112,7 @@ export default function Users() {
                         <div className={styles.cardLeft}>
                             <div className={styles.avatar}>{user.username[0].toUpperCase()}</div>
                             <div>
-                                <div style={{ fontWeight: 'var(--weight-semibold)' }}>{user.username}</div>
+                                <div className={styles.username}>{user.username}</div>
                                 <span className="global-tags">{user.role.replace('ROLE_', '')}</span>
                             </div>
                         </div>
@@ -135,13 +135,12 @@ export default function Users() {
                 <div className="form-edit-card-main">
                     <div className="form-edit-card-main-border form-edit-card-main-image-container">
                         <img
-                            className="form-edit-card-main-image"
+                            className={`form-edit-card-main-image ${styles.mascot}`}
                             src="/img/mons/hoopa.png"
                             alt="hoopa"
-                            style={{ imageRendering: 'auto', padding: 0, width: '16em' }}
                         />
                     </div>
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <div className={styles.formCol}>
                         <div className="field">
                             <label className="field-label" htmlFor="create-username">Username</label>
                             <input
@@ -177,7 +176,7 @@ export default function Users() {
                                 <option value="ROLE_ADMIN">Admin</option>
                             </select>
                         </div>
-                        <div style={{ display: 'flex', gap: 'var(--space-2)', marginTop: 'var(--space-2)' }}>
+                        <div className={styles.actionRow}>
                             <button
                                 className="btn btn-validate full-width"
                                 onClick={handleCreate}
@@ -192,13 +191,12 @@ export default function Users() {
                 <div className="form-edit-card-main">
                     <div className="form-edit-card-main-border form-edit-card-main-image-container">
                         <img
-                            className="form-edit-card-main-image"
+                            className={`form-edit-card-main-image ${styles.mascot}`}
                             src="/img/mons/mew.png"
                             alt="mew"
-                            style={{ imageRendering: 'auto', padding: 0, width: '16em' }}
                         />
                     </div>
-                    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                    <div className={styles.formCol}>
                         <div className="field">
                             <label className="field-label" htmlFor="edit-username">Username</label>
                             <input
@@ -212,7 +210,7 @@ export default function Users() {
                         <div className="field">
                             <label className="field-label" htmlFor="edit-password">
                                 New password{' '}
-                                <span style={{ fontWeight: 'var(--weight-normal)', color: 'var(--color-text-muted)' }}>
+                                <span className={styles.hint}>
                                     (leave empty to keep current)
                                 </span>
                             </label>
@@ -237,13 +235,12 @@ export default function Users() {
                                 <option value="ROLE_ADMIN">Admin</option>
                             </select>
                         </div>
-                        <div style={{ display: 'flex', gap: 'var(--space-2)', marginTop: 'var(--space-2)' }}>
-                            <button className="btn btn-cancel" style={{ width: '50%' }} onClick={() => setEditingUser(null)}>
+                        <div className={styles.actionRow}>
+                            <button className="btn btn-cancel half-width" onClick={() => setEditingUser(null)}>
                                 Cancel
                             </button>
                             <button
-                                className="btn btn-validate"
-                                style={{ width: '50%' }}
+                                className="btn btn-validate half-width"
                                 onClick={handleUpdate}
                                 disabled={updateUser.isPending}
                             >

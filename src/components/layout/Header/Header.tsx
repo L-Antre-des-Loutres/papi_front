@@ -37,8 +37,6 @@ export default function Header() {
     const [urlDraft, setUrlDraft]   = useState(settings.baseUrl);
     const [urlStatus, setUrlStatus] = useState<'idle' | 'ok' | 'error'>('idle');
 
-    const leftOffset = collapsed ? 'var(--sidebar-collapsed)' : 'var(--sidebar-width)';
-
     async function commitUrl() {
         // Empty = use relative URLs (Vite proxy / same-origin). Allowed.
         const trimmed = urlDraft.trim().replace(/\/$/, '');
@@ -50,14 +48,13 @@ export default function Header() {
     }
 
     return (
-        <header className={styles.header} style={{ left: leftOffset }}>
+        <header className={`${styles.header} ${collapsed ? styles.headerCollapsed : ''}`}>
 
             <div className={styles.left}>
                 <button
-                    className="btn btn-ghost btn-sm"
+                    className={`btn btn-ghost btn-sm ${styles.toggleBtn}`}
                     onClick={toggle}
                     aria-label="Toggle sidebar"
-                    style={{ padding: 'var(--space-2)', borderRadius: 'var(--radius-md)' }}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
                          fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -106,7 +103,7 @@ export default function Header() {
                     aria-label="API base URL"
                 />
 
-                <div style={{ borderLeft: '1px solid var(--color-border)', height: '24px', margin: '0 var(--space-2)' }} />
+                <div className={styles.divider} />
 
                 <button
                     className={styles.reloadBtn}

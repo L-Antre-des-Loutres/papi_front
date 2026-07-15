@@ -39,6 +39,10 @@
     gap: var(--space-3);
 }
 
+.fieldGrow {
+    flex: 1;
+}
+
 .addActions {
     display: flex;
     justify-content: space-between;

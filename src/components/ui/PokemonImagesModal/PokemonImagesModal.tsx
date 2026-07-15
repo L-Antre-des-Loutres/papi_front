@@ -142,7 +142,7 @@ export default function PokemonImagesModal({ pkmnId, pkmnName, onClose }: Pokemo
                     </div>
 
                     <div className={styles.addRow}>
-                        <div className="field" style={{ flex: 1 }}>
+                        <div className={`field ${styles.fieldGrow}`}>
                             <label className="field-label" htmlFor="img-name">Name (optional)</label>
                             <input
                                 id="img-name"
@@ -153,7 +153,7 @@ export default function PokemonImagesModal({ pkmnId, pkmnName, onClose }: Pokemo
                                 onChange={(e) => setName(e.target.value)}
                             />
                         </div>
-                        <div className="field" style={{ flex: 1 }}>
+                        <div className={`field ${styles.fieldGrow}`}>
                             <label className="field-label" htmlFor="img-tags">Tags (comma-separated, optional)</label>
                             <input
                                 id="img-tags"
@@ -232,8 +232,7 @@ export default function PokemonImagesModal({ pkmnId, pkmnName, onClose }: Pokemo
                                     </button>
                                 )}
                                 <button
-                                    className="btn btn-sm"
-                                    style={{ background: 'var(--color-delete)', color: 'white' }}
+                                    className="btn btn-sm btn-delete"
                                     onClick={() => deleteMutation.mutate(img.id)}
                                     disabled={deleteMutation.isPending}
                                 >

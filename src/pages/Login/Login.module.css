@@ -8,6 +8,16 @@
     justify-content: center;
 }
 
+.mascot {
+    image-rendering: auto;
+    padding: 0;
+    width: 16em;
+}
+
+.submitBtn {
+    margin-top: var(--space-3);
+}
+
 .error {
     font-size: var(--text-sm);
     color: var(--color-delete);

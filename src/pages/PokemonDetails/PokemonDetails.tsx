@@ -212,18 +212,17 @@ export default function PokemonDetails() {
     function statRow(key: keyof FormState, label: string, bold = false) {
         return (
             <div className={styles.statRow}>
-                <span className={styles.statLabel} style={bold ? { fontWeight: 'var(--weight-black)' } : undefined}>
+                <span className={`${styles.statLabel} ${bold ? styles.bold : ''}`}>
                     {label}
                 </span>
                 <input
-                    className="global-number-input number-input-disable-increment"
+                    className={`global-number-input number-input-disable-increment ${bold ? styles.bold : ''}`}
                     type="number"
                     readOnly={bold}
                     value={bold
                         ? (key === 'baseSpeed' ? bst : evTotal)
                         : (form as FormState)[key] as number}
                     onChange={bold ? undefined : (e) => setField(key, Number(e.target.value) as FormState[typeof key])}
-                    style={bold ? { fontWeight: 'var(--weight-black)' } : undefined}
                 />
             </div>
         );
@@ -275,10 +274,10 @@ export default function PokemonDetails() {
                 </div>
 
                 {/* Tags */}
-                <div style={{ borderLeft: 'none', flex: 1 }}>
+                <div className={styles.tagsSection}>
                     <div className="field">
                         <label className="field-label">Tags</label>
-                        <div style={{ display: 'flex', gap: '8px' }}>
+                        <div className={styles.tagRow}>
                             <input
                                 className="global-text-input full-width"
                                 type="text"
@@ -403,8 +402,8 @@ export default function PokemonDetails() {
                             {statRow('baseSpeDefense','Spe. Defense')}
                             {statRow('baseSpeed',     'Speed')}
                             <div className={styles.statRow}>
-                                <span className={styles.statLabel} style={{ fontWeight: 'var(--weight-black)' }}>BASE STAT TOTAL</span>
-                                <input className="global-number-input number-input-disable-increment" type="number" readOnly value={bst} style={{ fontWeight: 'var(--weight-black)' }} />
+                                <span className={`${styles.statLabel} ${styles.bold}`}>BASE STAT TOTAL</span>
+                                <input className={`global-number-input number-input-disable-increment ${styles.bold}`} type="number" readOnly value={bst} />
                             </div>
                         </div>
                         <div>
@@ -416,8 +415,8 @@ export default function PokemonDetails() {
                             {statRow('evSpeDefense','Spe. Defense')}
                             {statRow('evSpeed',     'Speed')}
                             <div className={styles.statRow}>
-                                <span className={styles.statLabel} style={{ fontWeight: 'var(--weight-black)' }}>EV YIELD TOTAL</span>
-                                <input className="global-number-input number-input-disable-increment" type="number" readOnly value={evTotal} style={{ fontWeight: 'var(--weight-black)' }} />
+                                <span className={`${styles.statLabel} ${styles.bold}`}>EV YIELD TOTAL</span>
+                                <input className={`global-number-input number-input-disable-increment ${styles.bold}`} type="number" readOnly value={evTotal} />
                             </div>
                         </div>
                     </div>
@@ -429,11 +428,10 @@ export default function PokemonDetails() {
             </div>
 
             <div className={styles.actions}>
-                <Link to="/pokemon" className="btn btn-cancel" style={{ width: '50%' }}>Cancel</Link>
+                <Link to="/pokemon" className="btn btn-cancel half-width">Cancel</Link>
                 <button
                     type="button"
-                    className="btn btn-validate"
-                    style={{ width: '50%' }}
+                    className="btn btn-validate half-width"
                     onClick={() => save.mutate()}
                     disabled={save.isPending}
                 >

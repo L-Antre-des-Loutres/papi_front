@@ -1,5 +1,11 @@
 .section { margin-bottom: var(--space-8); }
 
+.mascot {
+    image-rendering: auto;
+    padding: 0;
+    width: 14em;
+}
+
 .fields {
     flex: 1;
     display: flex;

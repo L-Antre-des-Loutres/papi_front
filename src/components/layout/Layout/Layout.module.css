@@ -7,8 +7,13 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    margin-left: var(--sidebar-width);
     transition: margin-left var(--transition-base);
     min-width: 0;
+}
+
+.contentCollapsed {
+    margin-left: var(--sidebar-collapsed);
 }
 
 .main {

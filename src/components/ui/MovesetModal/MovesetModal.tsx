@@ -110,8 +110,7 @@ export default function MovesetModal({ pkmnId, pkmnName, moveset, availableMoves
                                 {entry.learnLevel != null && ` (Lv. ${entry.learnLevel})`}
                             </span>
                             <button
-                                className="btn btn-sm"
-                                style={{ background: 'var(--color-delete)', color: 'white' }}
+                                className="btn btn-sm btn-delete"
                                 onClick={() => deleteMutation.mutate(entry.id)}
                                 disabled={deleteMutation.isPending}
                             >
@@ -120,7 +119,7 @@ export default function MovesetModal({ pkmnId, pkmnName, moveset, availableMoves
                         </div>
                     ))}
                     {moveset.length === 0 && (
-                        <p style={{ color: 'var(--color-text-muted)', fontSize: 'var(--text-sm)' }}>No moves yet.</p>
+                        <p className={styles.muted}>No moves yet.</p>
                     )}
                 </div>
 

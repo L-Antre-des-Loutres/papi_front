@@ -38,10 +38,9 @@ export default function Settings() {
                 <div className="form-edit-card-main">
                     <div className="form-edit-card-main-border form-edit-card-main-image-container">
                         <img
-                            className="form-edit-card-main-image"
+                            className={`form-edit-card-main-image ${styles.mascot}`}
                             src="/img/mons/porygon.png"
                             alt="porygon"
-                            style={{ imageRendering: 'auto', padding: 0, width: '14em' }}
                         />
                     </div>
 
