@@ -81,6 +81,8 @@ export const ENDPOINTS = {
 
     images: {
         generatePokemon: (id: number) => `/api/images/generate/pokemon/${id}`,
+        renderPokemon:   (id: number) => `/api/images/render/pokemon/${id}`,
+        templates:       '/api/images/templates',
         byFilename:      (filename: string) => `/api/images/${filename}`,
     },
 

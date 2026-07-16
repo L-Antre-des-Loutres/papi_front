@@ -231,3 +231,8 @@ export interface ImageResponse {
     size: number;
     url: string;
 }
+
+export interface TemplateSummary {
+    id: string;
+    name: string;
+}

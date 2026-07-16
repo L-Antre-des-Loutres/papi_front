@@ -10,7 +10,6 @@ import PageLoader from '../../components/ui/PageLoader/PageLoader';
 import LangModal from '../../components/ui/LangModal/LangModal';
 import MovesetModal from '../../components/ui/MovesetModal/MovesetModal';
 import PokemonImagesModal from '../../components/ui/PokemonImagesModal/PokemonImagesModal';
-import ImageExportModal from '../../components/ui/ImageExportModal/ImageExportModal';
 import styles from './Pokemon.module.css';
 import LinkCard from "../../components/ui/LinkCard/LinkCard.tsx";
 
@@ -108,7 +107,6 @@ export default function Pokemon() {
     const [langModalId, setLangModalId]     = useState<number | null>(null);
     const [movesetPkmnId, setMovesetPkmnId] = useState<number | null>(null);
     const [imagesPkmnId, setImagesPkmnId]   = useState<number | null>(null);
-    const [exportImageOpen, setExportImageOpen] = useState(false);
     const [size, setSize] = useState(50);
 
     const {
@@ -224,7 +222,7 @@ export default function Pokemon() {
             <h2>Export Pokémon</h2>
 
             <div className={`default-card-grid-5 ${styles.grid}`}>
-                <LinkCard onClick={() => setExportImageOpen(true)} imageSrc="/img/export_image.png" title="Export Image" />
+                <LinkCard to="/pokemon/export" imageSrc="/img/export_image.png" title="Export Image" />
                 <LinkCard to="/#" imageSrc="/img/export_cobblemon_json.png"  title="Disabled: Not implemented yet" disabled={true} />
             </div>
 
@@ -422,10 +420,6 @@ export default function Pokemon() {
                     pkmnName={pokemon.find((p) => p.id === imagesPkmnId)?.symbol ?? ''}
                     onClose={() => setImagesPkmnId(null)}
                 />
-            )}
-
-            {exportImageOpen && (
-                <ImageExportModal onClose={() => setExportImageOpen(false)} />
             )}
         </>
     );

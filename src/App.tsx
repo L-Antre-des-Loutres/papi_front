@@ -8,6 +8,7 @@ import Login from './pages/Login/Login';
 import Home from './pages/Home/Home';
 import Pokemon from './pages/Pokemon/Pokemon';
 import PokemonDetails from './pages/PokemonDetails/PokemonDetails';
+import PokemonExport from './pages/PokemonExport/PokemonExport';
 import Abilities from './pages/Abilities/Abilities';
 import Moves from './pages/Moves/Moves';
 import Types from './pages/Types/Types';
@@ -33,8 +34,9 @@ function AppRoutes() {
 
                     <Route element={<ProtectedRoute />}>
                         <Route index              element={<Home />} />
-                        <Route path="pokemon"     element={<Pokemon />} />
-                        <Route path="pokemon/:id" element={<PokemonDetails />} />
+                        <Route path="pokemon"        element={<Pokemon />} />
+                        <Route path="pokemon/export" element={<PokemonExport />} />
+                        <Route path="pokemon/:id"    element={<PokemonDetails />} />
                         <Route path="abilities"   element={<Abilities />} />
                         <Route path="moves"       element={<Moves />} />
                         <Route path="types"       element={<Types />} />
