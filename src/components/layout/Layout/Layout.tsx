@@ -5,6 +5,7 @@ import Sidebar from '../Sidebar/Sidebar';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Toast from '../../ui/Toast/Toast';
+import ErrorBoundary from '../../ui/ErrorBoundary/ErrorBoundary';
 import styles from './Layout.module.css';
 
 function LayoutContent() {
@@ -20,7 +21,9 @@ function LayoutContent() {
                 <Header />
 
                 <main className={styles.main}>
-                    <Outlet />
+                    <ErrorBoundary label="This page crashed.">
+                        <Outlet />
+                    </ErrorBoundary>
                 </main>
 
                 <Footer />

@@ -1,0 +1,335 @@
+.editor {
+    max-width: var(--main-frame-max-width);
+}
+
+.templateBar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: center;
+    margin-bottom: var(--space-4);
+}
+
+.templateChip {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: var(--color-white);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-1) var(--space-2);
+}
+
+.templateChipName {
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+}
+
+.builtinBadge {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-normal);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 0 var(--space-1);
+}
+
+.editorBody {
+    display: flex;
+    gap: var(--space-5);
+    align-items: flex-start;
+}
+
+.editorForm {
+    flex: 0 0 320px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.formRow {
+    display: flex;
+    gap: var(--space-3);
+}
+
+.formRow > * {
+    flex: 1;
+    min-width: 0;
+}
+
+.sectionTitle {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--color-text-secondary);
+    margin: var(--space-2) 0 0;
+}
+
+.bgRow {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.bgPath {
+    flex: 1;
+    min-width: 0;
+    font-size: var(--text-xs);
+    font-family: monospace;
+    color: var(--color-text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.fileInput {
+    display: none;
+}
+
+.colorGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+}
+
+.colorField {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: var(--text-sm);
+    cursor: pointer;
+}
+
+.colorField input {
+    width: 36px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-white);
+    cursor: pointer;
+}
+
+.palette {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+}
+
+.elementList {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.elementRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    padding: var(--space-1) var(--space-2);
+    border: none;
+    background: transparent;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font: inherit;
+    font-size: var(--text-sm);
+    text-align: left;
+}
+
+.elementRow:hover {
+    background: var(--rgb-dark-background);
+}
+
+.elementRowSelected {
+    background: var(--color-update);
+    color: var(--color-text-inverse);
+}
+
+.elementRowSelected:hover {
+    background: var(--color-update);
+}
+
+.elementName {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.elementCoords {
+    font-size: var(--text-xs);
+    opacity: 0.8;
+    flex-shrink: 0;
+}
+
+.labelModalOverlay {
+    position: fixed;
+    inset: 0;
+    background: var(--rgb-darkest-background);
+    z-index: var(--z-modal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.labelModal {
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+    min-width: var(--modal-min-width);
+    max-width: 420px;
+    width: 100%;
+    box-shadow: var(--shadow-modal);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.labelModalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.labelModalActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-2);
+}
+
+.coordInputs {
+    display: flex;
+    gap: var(--space-2);
+    align-items: flex-end;
+}
+
+.editorRight {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.canvas {
+    position: relative;
+    width: 640px;
+    max-width: 100%;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--color-white);
+}
+
+.canvasBg {
+    display: block;
+    width: 100%;
+    height: auto;
+    user-select: none;
+    pointer-events: none;
+}
+
+.box {
+    position: absolute;
+    border: 2px dashed var(--color-update);
+    background: rgba(30, 144, 255, 0.12);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    cursor: move;
+    touch-action: none;
+    box-sizing: border-box;
+}
+
+.boxSelected {
+    border-style: solid;
+    background: rgba(30, 144, 255, 0.22);
+}
+
+.boxLabel {
+    font-size: var(--text-xs);
+    font-weight: var(--weight-bold);
+    color: var(--color-update);
+    background: var(--color-white);
+    border-radius: var(--radius-sm);
+    padding: 0 var(--space-1);
+    margin: 2px;
+    pointer-events: none;
+    user-select: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+}
+
+.boxHandle {
+    position: absolute;
+    right: -2px;
+    bottom: -2px;
+    width: 14px;
+    height: 14px;
+    background: var(--color-update);
+    border: 2px solid var(--color-white);
+    border-radius: var(--radius-sm);
+    cursor: nwse-resize;
+    touch-action: none;
+}
+
+.editorPreview {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--rgb-dark-background);
+    border-radius: var(--radius-md);
+    padding: var(--space-3);
+    min-height: 200px;
+}
+
+.previewImg {
+    max-width: 100%;
+    max-height: 45vh;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
+    background: var(--color-white);
+}
+
+.previewLoading {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--rgb-darker-background);
+    border-radius: var(--radius-md);
+}
+
+.muted {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    text-align: center;
+}
+
+.error {
+    color: var(--color-delete);
+    font-size: var(--text-sm);
+}
+
+@media (max-width: 1100px) {
+    .editorBody {
+        flex-direction: column;
+    }
+
+    .editorForm {
+        flex: 1;
+        width: 100%;
+    }
+}

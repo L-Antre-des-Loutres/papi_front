@@ -24,10 +24,11 @@ function jwtExpired(token: string): boolean {
     }
 }
 
-function buildHeaders(extra?: HeadersInit): HeadersInit {
+function buildHeaders(extra?: HeadersInit, json = true): HeadersInit {
     const token = useAuthStore.getState().token;
     return {
-        'Content-Type': 'application/json',
+        // Multipart bodies must let the browser set the Content-Type (with boundary)
+        ...(json ? { 'Content-Type': 'application/json' } : {}),
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
         ...extra,
     };
@@ -36,7 +37,7 @@ function buildHeaders(extra?: HeadersInit): HeadersInit {
 async function fetchChecked(path: string, options: RequestInit = {}): Promise<Response> {
     const response = await fetch(`${getBaseUrl()}${path}`, {
         ...options,
-        headers: buildHeaders(options.headers),
+        headers: buildHeaders(options.headers, !(options.body instanceof FormData)),
     });
 
     if (response.status === 401) {
@@ -103,8 +104,10 @@ export function buildPageParams(query?: PageQuery): string {
 }
 
 export const apiClient = {
-    get:     <T>(path: string)                  => request<T>(path, { method: 'GET' }),
-    getBlob: (path: string)                     => requestBlob(path, { method: 'GET' }),
+    get:      <T>(path: string)                 => request<T>(path, { method: 'GET' }),
+    getBlob:  (path: string)                    => requestBlob(path, { method: 'GET' }),
+    postBlob: (path: string, body?: unknown)    => requestBlob(path, { method: 'POST', body: JSON.stringify(body) }),
+    postForm: <T>(path: string, form: FormData) => request<T>(path, { method: 'POST', body: form }),
     post:   <T>(path: string, body?: unknown)   => request<T>(path, { method: 'POST',  body: JSON.stringify(body) }),
     put:    <T>(path: string, body?: unknown)   => request<T>(path, { method: 'PUT',   body: JSON.stringify(body) }),
     patch:  <T>(path: string, body?: unknown)   => request<T>(path, { method: 'PATCH', body: JSON.stringify(body) }),

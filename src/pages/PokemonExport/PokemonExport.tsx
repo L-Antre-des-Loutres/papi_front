@@ -4,9 +4,16 @@ import type { Page, Pkmn, PkmnImage, Language, TemplateSummary } from '../../typ
 import { apiClient, getApiErrorMessage } from '../../api/client';
 import { ENDPOINTS } from '../../api/endpoints';
 import { useDebouncedValue } from '../../hooks/useDebouncedValue';
+import { useAuthStore, hasRole } from '../../context/store/authStore';
 import PageTitle from '../../components/ui/PageTitle/PageTitle';
 import PageLoader from '../../components/ui/PageLoader/PageLoader';
+import Spinner from '../../components/ui/Spinner/Spinner';
+import ErrorBoundary from '../../components/ui/ErrorBoundary/ErrorBoundary';
+import Tabs from '../../components/ui/Tabs/Tabs';
+import TemplateEditor from './TemplateEditor';
 import styles from './PokemonExport.module.css';
+
+type ExportTab = 'export' | 'editor';
 
 const LANGUAGES: Language[] = ['FR', 'EN'];
 
@@ -35,6 +42,10 @@ function renderPath(params: RenderParams): string {
 }
 
 export default function PokemonExport() {
+    const token = useAuthStore((s) => s.token);
+    const isAdmin = hasRole(token, 'ROLE_ADMIN');
+
+    const [activeTab, setActiveTab]                 = useState<ExportTab>('export');
     const [search, setSearch]                       = useState('');
     const [selectedPkmnId, setSelectedPkmnId]       = useState<number | null>(null);
     const [selectedImageId, setSelectedImageId]     = useState<number | null>(null);
@@ -128,6 +139,18 @@ export default function PokemonExport() {
             {isLoading && <PageLoader />}
             <PageTitle title="Export Image" imageSrc="/img/mons/mew.png" />
 
+            {isAdmin && (
+                <Tabs<ExportTab>
+                    tabs={[
+                        { id: 'export', label: 'Export image' },
+                        { id: 'editor', label: 'Template editor' },
+                    ]}
+                    active={activeTab}
+                    onChange={setActiveTab}
+                />
+            )}
+
+            {(!isAdmin || activeTab === 'export') && (
             <div className={styles.studio}>
                 {/* ── Controls ── */}
                 <div className={styles.controls}>
@@ -231,12 +254,16 @@ export default function PokemonExport() {
                     <div className={styles.previewBox}>
                         {previewUrl ? (
                             <img className={styles.previewImg} src={previewUrl} alt="Generated card preview" />
+                        ) : rendering ? (
+                            <Spinner />
                         ) : (
-                            <p className={styles.muted}>
-                                {selectedPkmn ? 'Rendering preview…' : 'Select a Pokémon to preview its card.'}
-                            </p>
+                            <p className={styles.muted}>Select a Pokémon to preview its card.</p>
                         )}
-                        {rendering && previewUrl && <span className={styles.renderingBadge}>Rendering…</span>}
+                        {rendering && previewUrl && (
+                            <div className={styles.previewLoading}>
+                                <Spinner />
+                            </div>
+                        )}
                     </div>
 
                     {isError && (
@@ -252,6 +279,17 @@ export default function PokemonExport() {
                     </button>
                 </div>
             </div>
+            )}
+
+            {isAdmin && activeTab === 'editor' && (
+                <ErrorBoundary label="The template editor crashed.">
+                    <TemplateEditor
+                        pkmnId={selectedPkmnId}
+                        language={language}
+                        imageId={effectiveImageId}
+                    />
+                </ErrorBoundary>
+            )}
         </>
     );
 }

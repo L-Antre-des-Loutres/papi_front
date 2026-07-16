@@ -235,4 +235,36 @@ export interface ImageResponse {
 export interface TemplateSummary {
     id: string;
     name: string;
+    builtin: boolean;
+}
+
+export type TemplateElementType =
+    | 'NAME' | 'TYPES' | 'SPRITE' | 'STATS' | 'DESCRIPTION' | 'ABILITIES' | 'DEX_NUMBER' | 'LABEL';
+
+export interface TemplateElement {
+    type: TemplateElementType;
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+    /** Free text — only used by LABEL elements. */
+    text?: string | null;
+}
+
+export interface TemplateStyle {
+    fontFamily?: string | null;
+    textColor?: string | null;
+    mutedTextColor?: string | null;
+    accentColor?: string | null;
+    badgeTextColor?: string | null;
+}
+
+export interface TemplateDefinition {
+    id: string;
+    name: string;
+    background: string;
+    referenceWidth: number;
+    referenceHeight: number;
+    elements: TemplateElement[];
+    style?: TemplateStyle | null;
 }

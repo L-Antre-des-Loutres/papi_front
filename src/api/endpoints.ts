@@ -80,10 +80,13 @@ export const ENDPOINTS = {
     },
 
     images: {
-        generatePokemon: (id: number) => `/api/images/generate/pokemon/${id}`,
-        renderPokemon:   (id: number) => `/api/images/render/pokemon/${id}`,
-        templates:       '/api/images/templates',
-        byFilename:      (filename: string) => `/api/images/${filename}`,
+        generatePokemon:     (id: number) => `/api/images/generate/pokemon/${id}`,
+        renderPokemon:       (id: number) => `/api/images/render/pokemon/${id}`,
+        templates:           '/api/images/templates',
+        template:            (id: string) => `/api/images/templates/${id}`,
+        templateBackgrounds: '/api/images/templates/backgrounds',
+        templateBackground:  (filename: string) => `/api/images/templates/backgrounds/${filename}`,
+        byFilename:          (filename: string) => `/api/images/${filename}`,
     },
 
 } as const;
