@@ -16,6 +16,7 @@ const ROUTE_LABELS: Record<string, string> = {
     users:      'Users',
     settings:   'Settings',
     login:      'Login',
+    'import-datapack': 'Import Datapack',
 };
 
 function useBreadcrumb() {
