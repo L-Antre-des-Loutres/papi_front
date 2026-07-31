@@ -143,6 +143,14 @@ export default function Sidebar() {
                     <span className={styles.badge}>{typeCount ?? 0}</span>
                 </NavLink>
 
+                {/* Services */}
+                <p className={styles.sectionLabel}>Services</p>
+
+                <NavLink to="/import-datapack" className={(s) => navClass(s, !auth)}>
+                    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4.5 2H11.5L14.5 5V14H1.5V5L4.5 2ZM2.5 5H13.5L11 3H5L2.5 5ZM8 12L11 9H9V6H7V9H5L8 12Z" fill="#ffffff" /></svg>
+                    <span>Import Datapack</span>
+                </NavLink>
+
                 {/* System */}
                 <p className={styles.sectionLabel}>System</p>
 

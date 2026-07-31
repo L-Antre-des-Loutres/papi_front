@@ -12,6 +12,7 @@ import Abilities from './pages/Abilities/Abilities';
 import Moves from './pages/Moves/Moves';
 import Types from './pages/Types/Types';
 import Users from './pages/Users/Users';
+import ImportDatapack from './pages/ImportDatapack/ImportDatapack';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -39,6 +40,7 @@ function AppRoutes() {
                         <Route path="moves"       element={<Moves />} />
                         <Route path="types"       element={<Types />} />
                         <Route path="users"       element={<Users />} />
+                        <Route path="import-datapack" element={<ImportDatapack />} />
                     </Route>
                 </Route>
             </Routes>
