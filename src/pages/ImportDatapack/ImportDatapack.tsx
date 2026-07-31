@@ -5,19 +5,11 @@ import { useSettings } from '../../context/useSettings';
 import { useAuthStore } from '../../context/store/authStore';
 import styles from './ImportDatapack.module.css';
 
-interface ProgressData {
-    step: string;
-    message: string;
-    current: number;
-    total: number;
-}
-
 export default function ImportDatapack() {
     const [file, setFile] = useState<File | null>(null);
     const [tag, setTag] = useState('');
     const [loading, setLoading] = useState(false);
     const [dragActive, setDragActive] = useState(false);
-    const [progress, setProgress] = useState<ProgressData | null>(null);
     
     const inputRef = useRef<HTMLInputElement>(null);
     const addToast = useToastStore((s) => s.addToast);
@@ -63,7 +55,6 @@ export default function ImportDatapack() {
         }
 
         setLoading(true);
-        setProgress(null);
         
         const formData = new FormData();
         formData.append('file', file);
@@ -85,36 +76,6 @@ export default function ImportDatapack() {
             if (!res.ok) {
                 throw new Error('Upload failed');
             }
-            
-            // Read SSE stream from the POST response
-            if (res.body) {
-                const reader = res.body.getReader();
-                const decoder = new TextDecoder();
-                let buffer = '';
-
-                while (true) {
-                    const { done, value } = await reader.read();
-                    if (done) break;
-                    
-                    buffer += decoder.decode(value, { stream: true });
-                    const lines = buffer.split('\n');
-                    buffer = lines.pop() || ''; // Keep the last incomplete line in the buffer
-                    
-                    for (const line of lines) {
-                        if (line.startsWith('data:')) {
-                            try {
-                                const dataStr = line.substring(5).trim();
-                                if (dataStr) {
-                                    const parsed = JSON.parse(dataStr);
-                                    setProgress(parsed);
-                                }
-                            } catch (e) {
-                                console.error('Failed to parse SSE data', e);
-                            }
-                        }
-                    }
-                }
-            }
 
             addToast('Datapack imported successfully!', 'success');
             setFile(null);
@@ -124,11 +85,8 @@ export default function ImportDatapack() {
             console.error(err);
         } finally {
             setLoading(false);
-            setProgress(null);
         }
     };
-
-    const percent = progress?.total ? Math.round((progress.current / progress.total) * 100) : 0;
 
     return (
         <div className="container">
@@ -196,28 +154,6 @@ export default function ImportDatapack() {
                         {loading ? 'Importing...' : 'Start Import'}
                     </button>
                 </form>
-
-                {/* Progress Bar */}
-                {loading && progress && (
-                    <div className={styles.progressSection}>
-                        <div className={styles.progressHeader}>
-                            <span className={styles.progressTitle}>
-                                {progress.step === 'entities' ? 'Parsing Entities' : 
-                                 progress.step === 'translations' ? 'Importing Translations' : 'Finalizing Forms'}
-                            </span>
-                            <span className={styles.progressCount}>{percent}%</span>
-                        </div>
-                        <div className={styles.progressBarContainer}>
-                            <div 
-                                className={styles.progressBarFill} 
-                                style={{ width: `${Math.max(5, percent)}%` }}
-                            ></div>
-                        </div>
-                        <div className={styles.progressMessage}>
-                            {progress.message}
-                        </div>
-                    </div>
-                )}
             </div>
         </div>
     );
